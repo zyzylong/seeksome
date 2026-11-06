@@ -41,6 +41,7 @@ build/
 ### Claude Code ###
 .claude
 CLAUDE.md
+.superpowers
 
 ### Logs / JVM ###
 *.log
