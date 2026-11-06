@@ -21,3 +21,13 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+sa-token:
+  token-name: satoken
+  timeout: 7200
+  activity-timeout: 1800
+  is-concurrent: true
+  is-share: true
+  token-style: uuid
+  is-print: false
+  is-write-header: true
