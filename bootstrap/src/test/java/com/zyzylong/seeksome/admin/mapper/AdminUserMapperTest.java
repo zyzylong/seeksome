@@ -2,6 +2,7 @@ package com.zyzylong.seeksome.admin.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zyzylong.seeksome.admin.domain.dataobject.AdminUserDO;
+import org.apache.ibatis.annotations.Update;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -38,6 +40,20 @@ class AdminUserMapperTest {
     void duplicate_username_is_rejected() {
         adminUserMapper.insert(newAdmin("admin_dup", 1));
         assertThrows(DuplicateKeyException.class, () -> adminUserMapper.insert(newAdmin("admin_dup", 1)));
+    }
+
+    @Test
+    void increment_failed_count_sql_reads_failed_count_before_increment() throws NoSuchMethodException {
+        Update update = AdminUserMapper.class
+                .getMethod("incrementFailedCount", Long.class, int.class, LocalDateTime.class, LocalDateTime.class)
+                .getAnnotation(Update.class);
+        String sql = String.join(" ", update.value());
+        int lockAssignmentIndex = sql.indexOf("locked_until = CASE");
+        int incrementAssignmentIndex = sql.indexOf("failed_count = failed_count + 1");
+        assertTrue(lockAssignmentIndex >= 0, "SQL must assign locked_until via CASE");
+        assertTrue(incrementAssignmentIndex >= 0, "SQL must increment failed_count");
+        assertTrue(lockAssignmentIndex < incrementAssignmentIndex,
+                "MySQL evaluates SET assignments left to right; locked_until must be evaluated before failed_count is incremented");
     }
 
     private AdminUserDO newAdmin(String username, int status) {

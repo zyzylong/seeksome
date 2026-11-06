@@ -31,6 +31,8 @@ public class AdminAuthServiceImpl implements AdminAuthService {
 
     private static final String UNKNOWN_USER_AGENT = "unknown";
 
+    private static final String TIMING_DUMMY_HASH = BCrypt.hashpw("seeksome-timing-dummy", BCrypt.gensalt());
+
     private final AdminUserMapper adminUserMapper;
 
     private final IpLoginFailureCounter ipLoginFailureCounter;
@@ -59,7 +61,9 @@ public class AdminAuthServiceImpl implements AdminAuthService {
             admin.setLockedUntil(null);
         }
 
-        if (admin == null || !passwordMatches(requestParam.getPassword(), admin.getPassword())) {
+        String hashedPassword = admin == null ? TIMING_DUMMY_HASH : admin.getPassword();
+        boolean passwordMatched = passwordMatches(requestParam.getPassword(), hashedPassword);
+        if (admin == null || !passwordMatched) {
             ipLoginFailureCounter.recordFailure(clientIp);
             if (admin != null) {
                 adminUserMapper.incrementFailedCount(admin.getId(), AdminAuthConstant.MAX_LOGIN_FAILURES,

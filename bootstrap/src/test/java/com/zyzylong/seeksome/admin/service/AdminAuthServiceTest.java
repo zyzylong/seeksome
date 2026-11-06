@@ -132,6 +132,19 @@ class AdminAuthServiceTest {
     }
 
     @Test
+    void unknown_account_still_runs_bcrypt_to_avoid_timing_side_channel() {
+        assertThrows(AdminAuthException.class,
+                () -> adminAuthService.login(loginReq("timing_warmup", "bad-pass"), "10.1.0.9", "JUnit"));
+        long startNanos = System.nanoTime();
+        assertThrows(AdminAuthException.class,
+                () -> adminAuthService.login(loginReq("no_such_timing", "bad-pass"), "10.1.0.9", "JUnit"));
+        long elapsedMillis = (System.nanoTime() - startNanos) / 1_000_000;
+        assertTrue(elapsedMillis >= 10,
+                "unknown-account login must still run a BCrypt check to avoid a timing side channel, took "
+                        + elapsedMillis + "ms");
+    }
+
+    @Test
     void missing_user_agent_does_not_break_failure_audit() {
         Logger logger = (Logger) LoggerFactory.getLogger(AdminAuthServiceImpl.class);
         ListAppender<ILoggingEvent> appender = new ListAppender<>();

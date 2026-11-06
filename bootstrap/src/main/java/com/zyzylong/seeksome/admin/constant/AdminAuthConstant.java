@@ -13,6 +13,8 @@ public final class AdminAuthConstant {
 
     public static final int IP_WINDOW_MINUTES = 10;
 
+    public static final int IP_PRUNE_INTERVAL_MINUTES = 1;
+
     public static final String ADMIN_LOGIN_TYPE = "admin";
 
     public static final String ADMIN_TOKEN_NAME = "admin-token";

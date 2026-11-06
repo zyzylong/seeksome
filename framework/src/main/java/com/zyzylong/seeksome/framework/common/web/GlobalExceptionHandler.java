@@ -8,9 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * 全局异常处理，将异常统一转换为 Result 响应结构。
@@ -39,6 +42,26 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Result<Void>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(CommonErrorCodeEnum.PARAM_INVALID.getHttpStatus())
                 .body(Result.failure(CommonErrorCodeEnum.PARAM_INVALID));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Result<Void>> handleNoResourceFoundException(NoResourceFoundException ex) {
+        return ResponseEntity.status(CommonErrorCodeEnum.NOT_FOUND.getHttpStatus())
+                .body(Result.failure(CommonErrorCodeEnum.NOT_FOUND));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Result<Void>> handleHttpRequestMethodNotSupportedException(
+            HttpRequestMethodNotSupportedException ex) {
+        return ResponseEntity.status(CommonErrorCodeEnum.METHOD_NOT_ALLOWED.getHttpStatus())
+                .body(Result.failure(CommonErrorCodeEnum.METHOD_NOT_ALLOWED));
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<Result<Void>> handleHttpMediaTypeNotSupportedException(
+            HttpMediaTypeNotSupportedException ex) {
+        return ResponseEntity.status(CommonErrorCodeEnum.UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
+                .body(Result.failure(CommonErrorCodeEnum.UNSUPPORTED_MEDIA_TYPE));
     }
 
     @ExceptionHandler(Exception.class)
