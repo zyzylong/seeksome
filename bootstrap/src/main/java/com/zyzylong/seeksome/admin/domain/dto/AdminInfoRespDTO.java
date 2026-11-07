@@ -1,6 +1,7 @@
 package com.zyzylong.seeksome.admin.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  */
 @Schema(description = "当前登录管理员信息")
 @Data
+@Builder
 public class AdminInfoRespDTO {
 
     @Schema(description = "管理员 ID", example = "1")

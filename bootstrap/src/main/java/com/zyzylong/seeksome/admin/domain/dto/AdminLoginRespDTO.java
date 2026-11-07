@@ -1,6 +1,7 @@
 package com.zyzylong.seeksome.admin.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  */
 @Schema(description = "管理员登录响应")
 @Data
+@Builder
 public class AdminLoginRespDTO {
 
     @Schema(description = "管理员会话 Token，同时写入响应头 admin-token",

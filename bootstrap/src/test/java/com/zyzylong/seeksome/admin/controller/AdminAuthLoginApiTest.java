@@ -186,14 +186,15 @@ class AdminAuthLoginApiTest {
     }
 
     private AdminUserDO saveAdmin(String username, String rawPassword, int status) {
-        AdminUserDO admin = new AdminUserDO();
-        admin.setUsername(username);
-        admin.setPassword(BCrypt.hashpw(rawPassword, BCrypt.gensalt()));
-        admin.setRole("ADMIN");
-        admin.setStatus(status);
-        admin.setFailedCount(0);
-        admin.setCreatedAt(LocalDateTime.now());
-        admin.setUpdatedAt(LocalDateTime.now());
+        AdminUserDO admin = AdminUserDO.builder()
+                .username(username)
+                .password(BCrypt.hashpw(rawPassword, BCrypt.gensalt()))
+                .role("ADMIN")
+                .status(status)
+                .failedCount(0)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
         adminUserMapper.insert(admin);
         return admin;
     }

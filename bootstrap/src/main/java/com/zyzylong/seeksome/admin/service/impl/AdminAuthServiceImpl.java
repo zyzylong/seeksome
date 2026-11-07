@@ -90,12 +90,12 @@ public class AdminAuthServiceImpl implements AdminAuthService {
         writeAudit("login-success", admin.getId(), username, clientIp, resolvedUserAgent,
                 "success", "none");
 
-        AdminLoginRespDTO result = new AdminLoginRespDTO();
-        result.setToken(token);
-        result.setAdminId(admin.getId());
-        result.setUsername(admin.getUsername());
-        result.setRole(admin.getRole());
-        return result;
+        return AdminLoginRespDTO.builder()
+                .token(token)
+                .adminId(admin.getId())
+                .username(admin.getUsername())
+                .role(admin.getRole())
+                .build();
     }
 
     @Override
@@ -105,11 +105,11 @@ public class AdminAuthServiceImpl implements AdminAuthService {
             StpAdminUtil.logout();
             throw new AdminAuthException(CommonErrorCodeEnum.UNAUTHORIZED);
         }
-        AdminInfoRespDTO result = new AdminInfoRespDTO();
-        result.setAdminId(admin.getId());
-        result.setUsername(admin.getUsername());
-        result.setRole(admin.getRole());
-        return result;
+        return AdminInfoRespDTO.builder()
+                .adminId(admin.getId())
+                .username(admin.getUsername())
+                .role(admin.getRole())
+                .build();
     }
 
     @Override

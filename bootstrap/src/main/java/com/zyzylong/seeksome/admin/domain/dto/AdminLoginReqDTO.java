@@ -3,6 +3,7 @@ package com.zyzylong.seeksome.admin.domain.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
  */
 @Schema(description = "管理员登录请求")
 @Data
+@Builder
 public class AdminLoginReqDTO {
 
     @Schema(description = "管理员用户名，首尾空白会被去除", example = "admin")

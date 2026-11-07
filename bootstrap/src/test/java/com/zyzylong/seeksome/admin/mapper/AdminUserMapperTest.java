@@ -58,15 +58,15 @@ class AdminUserMapperTest {
     }
 
     private AdminUserDO newAdmin(String username, int status) {
-        AdminUserDO admin = new AdminUserDO();
-        admin.setUsername(username);
-        admin.setPassword("$2a$10$01234567890123456789012345678901234567890123456789012");
-        admin.setRole("ADMIN");
-        admin.setStatus(status);
-        admin.setFailedCount(0);
-        admin.setCreatedAt(LocalDateTime.now());
-        admin.setUpdatedAt(LocalDateTime.now());
-        return admin;
+        return AdminUserDO.builder()
+                .username(username)
+                .password("$2a$10$01234567890123456789012345678901234567890123456789012")
+                .role("ADMIN")
+                .status(status)
+                .failedCount(0)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 
     @Test
