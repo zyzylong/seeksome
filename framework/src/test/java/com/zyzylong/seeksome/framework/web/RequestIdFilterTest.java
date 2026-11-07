@@ -1,4 +1,4 @@
-package com.zyzylong.seeksome.framework.common.web;
+package com.zyzylong.seeksome.framework.web;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;

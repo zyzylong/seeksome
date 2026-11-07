@@ -1,7 +1,7 @@
 package com.zyzylong.seeksome.admin.exception;
 
-import com.zyzylong.seeksome.framework.common.error.BaseErrorCode;
-import com.zyzylong.seeksome.framework.common.exception.AbstractException;
+import com.zyzylong.seeksome.framework.error.BaseErrorCode;
+import com.zyzylong.seeksome.framework.exception.AbstractException;
 
 /**
  * 管理员认证异常。

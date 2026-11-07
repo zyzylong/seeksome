@@ -14,7 +14,7 @@ import com.zyzylong.seeksome.admin.exception.AdminAuthException;
 import com.zyzylong.seeksome.admin.mapper.AdminUserMapper;
 import com.zyzylong.seeksome.admin.service.AdminAuthService;
 import com.zyzylong.seeksome.admin.service.IpLoginFailureCounter;
-import com.zyzylong.seeksome.framework.common.error.CommonErrorCodeEnum;
+import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

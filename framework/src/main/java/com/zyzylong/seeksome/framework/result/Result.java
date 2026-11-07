@@ -1,7 +1,7 @@
-package com.zyzylong.seeksome.framework.common.result;
+package com.zyzylong.seeksome.framework.result;
 
-import com.zyzylong.seeksome.framework.common.error.BaseErrorCode;
-import com.zyzylong.seeksome.framework.common.error.CommonErrorCodeEnum;
+import com.zyzylong.seeksome.framework.error.BaseErrorCode;
+import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;
 import lombok.Data;
 import org.slf4j.MDC;
 

@@ -5,7 +5,7 @@ import com.zyzylong.seeksome.admin.domain.dto.AdminInfoRespDTO;
 import com.zyzylong.seeksome.admin.domain.dto.AdminLoginReqDTO;
 import com.zyzylong.seeksome.admin.domain.dto.AdminLoginRespDTO;
 import com.zyzylong.seeksome.admin.service.AdminAuthService;
-import com.zyzylong.seeksome.framework.common.result.Result;
+import com.zyzylong.seeksome.framework.result.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

@@ -1,4 +1,4 @@
-package com.zyzylong.seeksome.framework.common.web;
+package com.zyzylong.seeksome.framework.web;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

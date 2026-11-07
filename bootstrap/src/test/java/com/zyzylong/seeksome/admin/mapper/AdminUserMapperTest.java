@@ -1,5 +1,6 @@
 package com.zyzylong.seeksome.admin.mapper;
 
+import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zyzylong.seeksome.admin.domain.dataobject.AdminUserDO;
 import org.apache.ibatis.annotations.Update;
@@ -66,5 +67,11 @@ class AdminUserMapperTest {
         admin.setCreatedAt(LocalDateTime.now());
         admin.setUpdatedAt(LocalDateTime.now());
         return admin;
+    }
+
+    @Test
+    void testAdminUSerHash() {
+        System.out.println(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        System.out.println(BCrypt.checkpw("123456", BCrypt.hashpw("123456", BCrypt.gensalt())));
     }
 }

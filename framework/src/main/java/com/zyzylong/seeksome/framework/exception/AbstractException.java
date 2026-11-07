@@ -1,6 +1,6 @@
-package com.zyzylong.seeksome.framework.common.exception;
+package com.zyzylong.seeksome.framework.exception;
 
-import com.zyzylong.seeksome.framework.common.error.BaseErrorCode;
+import com.zyzylong.seeksome.framework.error.BaseErrorCode;
 import lombok.Getter;
 
 /**

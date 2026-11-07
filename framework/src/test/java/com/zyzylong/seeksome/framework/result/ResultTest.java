@@ -1,6 +1,6 @@
-package com.zyzylong.seeksome.framework.common.result;
+package com.zyzylong.seeksome.framework.result;
 
-import com.zyzylong.seeksome.framework.common.error.CommonErrorCodeEnum;
+import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;
 

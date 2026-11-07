@@ -1,8 +1,8 @@
-package com.zyzylong.seeksome.framework.common.web;
+package com.zyzylong.seeksome.framework.web;
 
-import com.zyzylong.seeksome.framework.common.error.CommonErrorCodeEnum;
-import com.zyzylong.seeksome.framework.common.exception.AbstractException;
-import com.zyzylong.seeksome.framework.common.result.Result;
+import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;
+import com.zyzylong.seeksome.framework.exception.AbstractException;
+import com.zyzylong.seeksome.framework.result.Result;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 

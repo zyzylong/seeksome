@@ -1,6 +1,6 @@
 package com.zyzylong.seeksome.admin.domain.enums;
 
-import com.zyzylong.seeksome.framework.common.error.BaseErrorCode;
+import com.zyzylong.seeksome.framework.error.BaseErrorCode;
 
 /**
  * 管理员认证错误码。

@@ -1,4 +1,4 @@
-package com.zyzylong.seeksome.framework.common.error;
+package com.zyzylong.seeksome.framework.error;
 
 /**
  * 通用错误码，覆盖成功与跨业务共享的失败场景。
