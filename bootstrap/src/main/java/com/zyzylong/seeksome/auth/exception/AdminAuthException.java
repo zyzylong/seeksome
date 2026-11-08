@@ -1,0 +1,18 @@
+package com.zyzylong.seeksome.auth.exception;
+
+import com.zyzylong.seeksome.framework.error.BaseErrorCode;
+import com.zyzylong.seeksome.framework.exception.AbstractException;
+
+/**
+ * 管理员认证异常。
+ */
+public class AdminAuthException extends AbstractException {
+
+    public AdminAuthException(BaseErrorCode errorCode) {
+        super(errorCode);
+    }
+
+    public AdminAuthException(BaseErrorCode errorCode, String message) {
+        super(errorCode, message);
+    }
+}

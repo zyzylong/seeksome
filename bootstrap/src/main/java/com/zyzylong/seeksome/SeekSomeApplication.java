@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.zyzylong.seeksome.admin.mapper")
+@MapperScan("com.zyzylong.seeksome.auth.dao.mapper")
 public class SeekSomeApplication {
 
     public static void main(String[] args) {
