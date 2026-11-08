@@ -21,8 +21,11 @@
 ```
 seeksome
 │
-├── bootstrap       
-│      └──  SeekSomeApplication.java    # 唯一启动类        
+├── bootstrap                                 # 单体应用：启动装配 + 业务
+│   └── src/main/java/com/zyzylong/seeksome
+│       ├── auth/                             # 认证域（controller/admin、service、dao）
+│       ├── config/                           # 全局配置（Swagger）
+│       └── SeekSomeApplication.java          # 唯一启动类
 │
-└── framework   
+└── framework                                 # 技术基础：结果契约、异常、Web 机制
 ```
