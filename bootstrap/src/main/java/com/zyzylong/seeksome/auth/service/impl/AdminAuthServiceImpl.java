@@ -2,7 +2,6 @@ package com.zyzylong.seeksome.auth.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
-import com.zyzylong.seeksome.auth.StpAdminUtil;
 import com.zyzylong.seeksome.auth.constant.AdminAuthConstant;
 import com.zyzylong.seeksome.auth.controller.admin.request.AdminLoginRequest;
 import com.zyzylong.seeksome.auth.controller.admin.vo.AdminInfoVO;
@@ -15,6 +14,7 @@ import com.zyzylong.seeksome.auth.exception.AdminAuthException;
 import com.zyzylong.seeksome.auth.service.AdminAuthService;
 import com.zyzylong.seeksome.auth.service.IpLoginFailureCounter;
 import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;
+import com.zyzylong.seeksome.framework.security.StpAdminUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

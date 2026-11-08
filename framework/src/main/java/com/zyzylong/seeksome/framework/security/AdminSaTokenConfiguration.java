@@ -1,7 +1,6 @@
-package com.zyzylong.seeksome.auth.config;
+package com.zyzylong.seeksome.framework.security;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
-import com.zyzylong.seeksome.auth.StpAdminUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

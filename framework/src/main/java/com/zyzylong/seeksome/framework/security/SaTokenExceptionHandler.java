@@ -1,4 +1,4 @@
-package com.zyzylong.seeksome.framework.web;
+package com.zyzylong.seeksome.framework.security;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;

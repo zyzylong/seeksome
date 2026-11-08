@@ -1,11 +1,11 @@
 package com.zyzylong.seeksome.auth.controller.admin;
 
-import com.zyzylong.seeksome.auth.StpAdminUtil;
 import com.zyzylong.seeksome.auth.controller.admin.request.AdminLoginRequest;
 import com.zyzylong.seeksome.auth.controller.admin.vo.AdminInfoVO;
 import com.zyzylong.seeksome.auth.controller.admin.vo.AdminLoginVO;
 import com.zyzylong.seeksome.auth.service.AdminAuthService;
 import com.zyzylong.seeksome.framework.result.Result;
+import com.zyzylong.seeksome.framework.security.StpAdminUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
