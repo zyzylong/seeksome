@@ -10,3 +10,18 @@ CREATE TABLE IF NOT EXISTS admin_user (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_admin_user_username UNIQUE (username)
 );
+
+CREATE TABLE IF NOT EXISTS user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(64) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    nickname VARCHAR(64) NOT NULL,
+    avatar VARCHAR(255) NULL,
+    credit_score INT NOT NULL DEFAULT 100,
+    wallet_balance DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    frozen_balance DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    status VARCHAR(16) NOT NULL DEFAULT 'normal',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_user_username UNIQUE (username)
+);
