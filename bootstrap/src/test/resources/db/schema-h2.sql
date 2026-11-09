@@ -56,3 +56,41 @@ CREATE TABLE IF NOT EXISTS auction_item (
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS auction_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    auction_id BIGINT NOT NULL,
+    buyer_id BIGINT NOT NULL,
+    seller_id BIGINT NOT NULL,
+    final_price DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(16) NOT NULL DEFAULT 'pending_payment',
+    pay_deadline TIMESTAMP NULL,
+    paid_at TIMESTAMP NULL,
+    delivered_at TIMESTAMP NULL,
+    completed_at TIMESTAMP NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (auction_id)
+);
+
+CREATE TABLE IF NOT EXISTS deposit_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    auction_id BIGINT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    type VARCHAR(16) NOT NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, auction_id, type)
+);
+
+CREATE TABLE IF NOT EXISTS credit_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    change_value INT NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    related_type VARCHAR(32) NULL,
+    related_id BIGINT NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
