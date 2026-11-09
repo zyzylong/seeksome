@@ -36,3 +36,23 @@ CREATE TABLE IF NOT EXISTS category (
     update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (code)
 );
+
+CREATE TABLE IF NOT EXISTS auction_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    seller_id BIGINT NOT NULL,
+    title VARCHAR(128) NOT NULL,
+    description CLOB NULL,
+    category_id BIGINT NOT NULL,
+    condition_level VARCHAR(32) NOT NULL,
+    images VARCHAR(255) NULL,
+    start_price DECIMAL(10, 2) NOT NULL,
+    min_increment DECIMAL(10, 2) NOT NULL,
+    duration_hours TINYINT NOT NULL DEFAULT 48,
+    current_price DECIMAL(10, 2) NULL,
+    start_time TIMESTAMP NULL,
+    end_time TIMESTAMP NULL,
+    status VARCHAR(16) NOT NULL DEFAULT 'pending_review',
+    reject_reason VARCHAR(255) NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

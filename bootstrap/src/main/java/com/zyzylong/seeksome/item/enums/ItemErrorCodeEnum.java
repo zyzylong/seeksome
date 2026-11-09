@@ -7,7 +7,8 @@ import com.zyzylong.seeksome.framework.error.BaseErrorCode;
  */
 public enum ItemErrorCodeEnum implements BaseErrorCode {
 
-    CATEGORY_CODE_EXISTS("A0501", "分类编码已存在", 409);
+    CATEGORY_CODE_EXISTS("A0501", "分类编码已存在", 409),
+    ITEM_STATUS_NOT_ALLOWED("A0502", "拍品当前状态不允许该操作", 409);
 
     private final String code;
 
