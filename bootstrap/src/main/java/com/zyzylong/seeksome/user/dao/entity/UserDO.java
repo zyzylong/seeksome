@@ -36,7 +36,7 @@ public class UserDO {
 
     private String status;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createTime;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateTime;
 }

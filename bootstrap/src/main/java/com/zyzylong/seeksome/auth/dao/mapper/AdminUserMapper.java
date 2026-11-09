@@ -19,10 +19,10 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
     @Update("UPDATE admin_user SET " +
             "locked_until = CASE WHEN failed_count + 1 >= #{maxFailures} THEN #{lockedUntil} ELSE locked_until END, " +
             "failed_count = failed_count + 1, " +
-            "updated_at = #{now} WHERE id = #{adminId}")
+            "update_time = #{now} WHERE id = #{adminId}")
     int incrementFailedCount(@Param("adminId") Long adminId, @Param("maxFailures") int maxFailures,
                              @Param("lockedUntil") LocalDateTime lockedUntil, @Param("now") LocalDateTime now);
 
-    @Update("UPDATE admin_user SET failed_count = 0, locked_until = NULL, updated_at = #{now} WHERE id = #{adminId}")
+    @Update("UPDATE admin_user SET failed_count = 0, locked_until = NULL, update_time = #{now} WHERE id = #{adminId}")
     int resetFailedCount(@Param("adminId") Long adminId, @Param("now") LocalDateTime now);
 }

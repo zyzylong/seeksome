@@ -57,15 +57,15 @@ class AdminUserMapperTest {
                 "MySQL evaluates SET assignments left to right; locked_until must be evaluated before failed_count is incremented");
     }
 
-    private AdminUserDO newAdmin(String username, int status) {
+    private AdminUserDO newAdmin(String username, int enabled) {
         return AdminUserDO.builder()
                 .username(username)
                 .password("$2a$10$01234567890123456789012345678901234567890123456789012")
                 .role("ADMIN")
-                .status(status)
+                .enabled(enabled)
                 .failedCount(0)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
                 .build();
     }
 

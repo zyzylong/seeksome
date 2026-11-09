@@ -1,6 +1,7 @@
 package com.zyzylong.seeksome.auth.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Builder;
@@ -25,13 +26,14 @@ public class AdminUserDO {
 
     private String role;
 
-    private Integer status;
+    @TableField("is_enabled")
+    private Integer enabled;
 
     private Integer failedCount;
 
     private LocalDateTime lockedUntil;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createTime;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateTime;
 }

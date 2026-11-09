@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
                     .or()
                     .like(UserDO::getNickname, keyword));
         }
-        queryWrapper.orderByDesc(UserDO::getCreatedAt).orderByDesc(UserDO::getId);
+        queryWrapper.orderByDesc(UserDO::getCreateTime).orderByDesc(UserDO::getId);
 
         Page<UserDO> page = userMapper.selectPage(
                 Page.of(requestParam.getPageNum(), requestParam.getPageSize()), queryWrapper);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .walletBalance(user.getWalletBalance())
                 .frozenBalance(user.getFrozenBalance())
                 .status(user.getStatus())
-                .createdAt(user.getCreatedAt())
+                .createTime(user.getCreateTime())
                 .build();
     }
 }

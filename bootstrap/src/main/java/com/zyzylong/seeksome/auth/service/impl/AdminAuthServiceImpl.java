@@ -78,7 +78,7 @@ public class AdminAuthServiceImpl implements AdminAuthService {
             throw new AdminAuthException(AdminAuthErrorCodeEnum.LOGIN_FAILED);
         }
 
-        if (!AdminStatusEnum.ENABLED.getValue().equals(admin.getStatus())) {
+        if (!AdminStatusEnum.ENABLED.getValue().equals(admin.getEnabled())) {
             writeAudit("account-disabled", admin.getId(), username, clientIp, resolvedUserAgent,
                     "rejected", "disabled");
             throw new AdminAuthException(AdminAuthErrorCodeEnum.ACCOUNT_DISABLED);
@@ -101,7 +101,7 @@ public class AdminAuthServiceImpl implements AdminAuthService {
     @Override
     public AdminInfoVO getCurrentAdminInfo(Long adminId) {
         AdminUserDO admin = adminUserMapper.selectById(adminId);
-        if (admin == null || !AdminStatusEnum.ENABLED.getValue().equals(admin.getStatus())) {
+        if (admin == null || !AdminStatusEnum.ENABLED.getValue().equals(admin.getEnabled())) {
             StpAdminUtil.logout();
             throw new AdminAuthException(CommonErrorCodeEnum.UNAUTHORIZED);
         }

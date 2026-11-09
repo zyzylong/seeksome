@@ -40,5 +40,5 @@ public class AdminUserVO {
     private String status;
 
     @Schema(description = "注册时间", example = "2026-11-08T10:00:00")
-    private LocalDateTime createdAt;
+    private LocalDateTime createTime;
 }

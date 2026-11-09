@@ -109,7 +109,7 @@ class AdminAuthSessionApiTest {
                 .andExpect(status().isOk()).andReturn());
         adminUserMapper.update(null, new LambdaUpdateWrapper<AdminUserDO>()
                 .eq(AdminUserDO::getId, admin.getId())
-                .set(AdminUserDO::getStatus, 0));
+                .set(AdminUserDO::getEnabled, 0));
         mockMvc.perform(get("/admin/auth/me").header("admin-token", token))
                 .andExpect(status().isUnauthorized());
     }
@@ -136,10 +136,10 @@ class AdminAuthSessionApiTest {
                 .username(username)
                 .password(BCrypt.hashpw(rawPassword, BCrypt.gensalt()))
                 .role("ADMIN")
-                .status(1)
+                .enabled(1)
                 .failedCount(0)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
                 .build();
         adminUserMapper.insert(admin);
         return admin;

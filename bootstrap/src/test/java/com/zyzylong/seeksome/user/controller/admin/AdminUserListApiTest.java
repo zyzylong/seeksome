@@ -74,7 +74,7 @@ class AdminUserListApiTest {
                 .andExpect(jsonPath("$.data.list[0].walletBalance").value(80.00))
                 .andExpect(jsonPath("$.data.list[0].frozenBalance").value(10.00))
                 .andExpect(jsonPath("$.data.list[0].status").value("normal"))
-                .andExpect(jsonPath("$.data.list[0].createdAt").exists())
+                .andExpect(jsonPath("$.data.list[0].createTime").exists())
                 .andExpect(jsonPath("$.data.list[0].password").doesNotExist());
     }
 
@@ -146,7 +146,7 @@ class AdminUserListApiTest {
     }
 
     private UserDO saveUser(String username, String nickname, int creditScore, BigDecimal walletBalance,
-                            BigDecimal frozenBalance, LocalDateTime createdAt) {
+                            BigDecimal frozenBalance, LocalDateTime createTime) {
         UserDO user = UserDO.builder()
                 .username(username)
                 .password(BCrypt.hashpw("123456", BCrypt.gensalt()))
@@ -155,8 +155,8 @@ class AdminUserListApiTest {
                 .walletBalance(walletBalance)
                 .frozenBalance(frozenBalance)
                 .status("normal")
-                .createdAt(createdAt)
-                .updatedAt(createdAt)
+                .createTime(createTime)
+                .updateTime(createTime)
                 .build();
         userMapper.insert(user);
         return user;
@@ -167,10 +167,10 @@ class AdminUserListApiTest {
                 .username("admin_user_list")
                 .password(BCrypt.hashpw("Passw0rd!", BCrypt.gensalt()))
                 .role("ADMIN")
-                .status(1)
+                .enabled(1)
                 .failedCount(0)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
                 .build());
         String body = objectMapper.writeValueAsString(
                 Map.of("username", "admin_user_list", "password", "Passw0rd!"));
