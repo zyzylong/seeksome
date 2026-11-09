@@ -3,6 +3,7 @@ package com.zyzylong.seeksome.user.service;
 import com.zyzylong.seeksome.framework.result.PageResult;
 import com.zyzylong.seeksome.user.controller.admin.request.AdminUserPageQueryRequest;
 import com.zyzylong.seeksome.user.controller.admin.vo.AdminUserVO;
+import com.zyzylong.seeksome.user.dao.entity.UserDO;
 import com.zyzylong.seeksome.user.enums.UserStatusEnum;
 
 /**
@@ -15,4 +16,8 @@ public interface UserService {
     void updateUserStatus(Long userId, UserStatusEnum userStatus);
 
     void checkUserAccessible(Long userId);
+
+    UserDO getUserByUsername(String username);
+
+    Long saveUser(UserDO requestParam);
 }

@@ -1,0 +1,30 @@
+package com.zyzylong.seeksome.auth.controller.app.request;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * 用户登录请求。
+ */
+@Schema(description = "用户登录请求")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AppLoginRequest {
+
+    @Schema(description = "用户名，首尾空白会被去除", example = "xiaoming")
+    @NotBlank
+    @Size(max = 64)
+    private String username;
+
+    @Schema(description = "登录密码，明文传输须使用 HTTPS", example = "Passw0rd!")
+    @NotBlank
+    @Size(max = 64)
+    private String password;
+}

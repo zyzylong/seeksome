@@ -5,6 +5,7 @@ import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;
 import com.zyzylong.seeksome.user.dao.entity.UserDO;
 import com.zyzylong.seeksome.user.dao.mapper.UserMapper;
 import com.zyzylong.seeksome.user.enums.UserErrorCodeEnum;
+import com.zyzylong.seeksome.user.enums.UserStatusEnum;
 import com.zyzylong.seeksome.user.exception.UserException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -53,6 +56,31 @@ class UserServiceTest {
                 () -> userService.checkUserAccessible(999999L));
 
         assertEquals(CommonErrorCodeEnum.NOT_FOUND, exception.getErrorCode());
+    }
+
+    @Test
+    void getUserByUsername_returns_null_for_unknown_user() {
+        assertNull(userService.getUserByUsername("user_service_missing"));
+    }
+
+    @Test
+    void saveUser_persists_user_and_getUserByUsername_returns_it() {
+        UserDO user = UserDO.builder()
+                .username("user_service_new")
+                .password(BCrypt.hashpw("123456", BCrypt.gensalt()))
+                .nickname("新用户")
+                .creditScore(100)
+                .walletBalance(BigDecimal.ZERO)
+                .frozenBalance(BigDecimal.ZERO)
+                .status(UserStatusEnum.NORMAL.getValue())
+                .build();
+
+        Long userId = userService.saveUser(user);
+
+        UserDO saved = userService.getUserByUsername("user_service_new");
+        assertNotNull(saved);
+        assertEquals(userId, saved.getId());
+        assertEquals("新用户", saved.getNickname());
     }
 
     private UserDO saveUser(String username, String userStatus) {

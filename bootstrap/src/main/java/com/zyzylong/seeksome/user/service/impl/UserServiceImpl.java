@@ -70,6 +70,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserDO getUserByUsername(String username) {
+        return userMapper.selectOne(new LambdaQueryWrapper<UserDO>()
+                .eq(UserDO::getUsername, username));
+    }
+
+    @Override
+    public Long saveUser(UserDO requestParam) {
+        userMapper.insert(requestParam);
+        return requestParam.getId();
+    }
+
     private AdminUserVO toAdminUserVO(UserDO user) {
         return AdminUserVO.builder()
                 .userId(user.getId())
