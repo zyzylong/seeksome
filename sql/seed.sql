@@ -9,6 +9,17 @@ ON DUPLICATE KEY UPDATE `password` = new.`password`,
                         `role` = new.`role`,
                         `is_enabled` = new.`is_enabled`;
 
+-- 拍品分类种子数据，可重复执行
+INSERT INTO `category` (`code`, `name`, `sort`, `is_enabled`)
+VALUES ('digital', '数码', 1, 1),
+       ('fashion', '穿搭', 2, 1),
+       ('home', '家居', 3, 1),
+       ('media', '书影音', 4, 1),
+       ('collection', '收藏', 5, 1) AS new
+ON DUPLICATE KEY UPDATE `name` = new.`name`,
+                        `sort` = new.`sort`,
+                        `is_enabled` = new.`is_enabled`;
+
 -- 种子用户，统一密码 123456，可重复执行
 -- 冻结金额暂为 0，待拍品与保证金种子数据落地后按 deposit_log 设置
 INSERT INTO `user` (`username`, `password`, `nickname`, `avatar`, `credit_score`, `wallet_balance`,
