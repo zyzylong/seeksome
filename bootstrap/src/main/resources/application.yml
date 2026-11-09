@@ -34,6 +34,8 @@ sa-token:
 
 # springdoc-openapi项目配置
 springdoc:
+  # 查询接口的复杂对象参数展平为 query 参数，避免 Knife4j 调试时误发 JSON body
+  default-flat-param-object: true
   swagger-ui:
     path: /swagger-ui.html
     tags-sorter: alpha
