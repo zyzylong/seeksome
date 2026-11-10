@@ -1,6 +1,7 @@
 package com.zyzylong.seeksome.user.controller.app;
 
 import cn.hutool.crypto.digest.BCrypt;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zyzylong.seeksome.user.dao.entity.UserDO;
 import com.zyzylong.seeksome.user.dao.mapper.UserMapper;
@@ -88,6 +89,30 @@ class AppUserProfileApiTest {
         mockMvc.perform(get("/app/users/profile").header("satoken", token))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value("A0404"));
+    }
+
+    @Test
+    void getProfile_rejects_frozen_user_with_valid_session() throws Exception {
+        UserDO user = saveUser("frozen_profile_get", "昵称", null, 100);
+        String token = login(user.getId());
+        freeze(user.getId());
+
+        mockMvc.perform(get("/app/users/profile").header("satoken", token))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value("A0301"));
+    }
+
+    @Test
+    void updateProfile_rejects_frozen_user_with_valid_session() throws Exception {
+        UserDO user = saveUser("frozen_profile_update", "旧昵称", null, 100);
+        String token = login(user.getId());
+        freeze(user.getId());
+
+        updateProfile(token, "新昵称", null)
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value("A0301"));
+
+        assertEquals("旧昵称", userMapper.selectById(user.getId()).getNickname());
     }
 
     @Test
@@ -198,6 +223,12 @@ class AppUserProfileApiTest {
                 .header("satoken", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(body)));
+    }
+
+    private void freeze(Long userId) {
+        userMapper.update(null, new LambdaUpdateWrapper<UserDO>()
+                .eq(UserDO::getId, userId)
+                .set(UserDO::getStatus, "frozen"));
     }
 
     private UserDO saveUser(String username, String nickname, String avatar, int creditScore) {

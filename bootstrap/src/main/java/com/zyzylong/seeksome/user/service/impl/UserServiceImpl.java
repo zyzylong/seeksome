@@ -1,5 +1,6 @@
 package com.zyzylong.seeksome.user.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -59,12 +60,14 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserException(CommonErrorCodeEnum.NOT_FOUND);
         }
-        if (userStatus.getValue().equals(user.getStatus())) {
-            return;
+        if (!userStatus.getValue().equals(user.getStatus())) {
+            userMapper.update(null, new LambdaUpdateWrapper<UserDO>()
+                    .eq(UserDO::getId, userId)
+                    .set(UserDO::getStatus, userStatus.getValue()));
         }
-        userMapper.update(null, new LambdaUpdateWrapper<UserDO>()
-                .eq(UserDO::getId, userId)
-                .set(UserDO::getStatus, userStatus.getValue()));
+        if (UserStatusEnum.FROZEN.equals(userStatus)) {
+            StpUtil.logout(userId);
+        }
     }
 
     @Override

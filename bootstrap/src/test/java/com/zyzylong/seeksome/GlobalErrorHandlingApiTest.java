@@ -43,4 +43,19 @@ class GlobalErrorHandlingApiTest {
                 .andExpect(status().isUnsupportedMediaType())
                 .andExpect(jsonPath("$.code").value("A0415"));
     }
+
+    @Test
+    void missing_request_param_returns_400_with_result_body() throws Exception {
+        mockMvc.perform(get("/test/user/login"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("A0400"))
+                .andExpect(jsonPath("$.message").value("缺少必填参数：userId"));
+    }
+
+    @Test
+    void unacceptable_response_type_returns_406_with_result_body() throws Exception {
+        mockMvc.perform(get("/app/categories").accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isNotAcceptable())
+                .andExpect(jsonPath("$.code").value("A0406"));
+    }
 }

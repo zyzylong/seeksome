@@ -36,8 +36,7 @@ public class AppUserController {
             description = "用户会话 Token，取登录响应中的 data.token")
     @GetMapping("/profile")
     public Result<AppUserProfileVO> getUserProfile() {
-        StpUtil.checkLogin();
-        return Result.success(userService.getUserProfile(StpUtil.getLoginIdAsLong()));
+        return Result.success(userService.getUserProfile(getAccessibleUserId()));
     }
 
     @Operation(summary = "编辑个人资料", description = "更新昵称与头像；头像不传保持原值，传空字符串清空头像")
@@ -46,8 +45,7 @@ public class AppUserController {
     @PutMapping("/profile")
     public Result<AppUserProfileVO> updateUserProfile(
             @Valid @RequestBody AppUserProfileUpdateRequest requestParam) {
-        StpUtil.checkLogin();
-        return Result.success(userService.updateUserProfile(StpUtil.getLoginIdAsLong(), requestParam));
+        return Result.success(userService.updateUserProfile(getAccessibleUserId(), requestParam));
     }
 
     @Operation(summary = "信用分与违约记录", description = "分页查询当前用户的信用分变动记录，即违约扣罚明细")
@@ -56,7 +54,13 @@ public class AppUserController {
     @GetMapping("/credit-logs")
     public Result<PageResult<AppCreditLogVO>> listCreditLogs(
             @Valid AppCreditLogPageQueryRequest requestParam) {
+        return Result.success(userService.listCreditLogs(getAccessibleUserId(), requestParam));
+    }
+
+    private Long getAccessibleUserId() {
         StpUtil.checkLogin();
-        return Result.success(userService.listCreditLogs(StpUtil.getLoginIdAsLong(), requestParam));
+        Long userId = StpUtil.getLoginIdAsLong();
+        userService.checkUserAccessible(userId);
+        return userId;
     }
 }

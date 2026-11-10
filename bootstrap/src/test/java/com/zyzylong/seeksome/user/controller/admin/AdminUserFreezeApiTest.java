@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,6 +88,21 @@ class AdminUserFreezeApiTest {
     }
 
     @Test
+    void freeze_kicks_out_existing_user_sessions() throws Exception {
+        UserDO user = saveUser("user_freeze_kick", "normal");
+        String userToken = loginUser(user.getUsername(), "123456");
+        String adminToken = loginAdmin();
+
+        mockMvc.perform(post("/admin/users/{userId}/freeze", user.getId()).header("admin-token", adminToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("00000"));
+
+        mockMvc.perform(get("/app/users/profile").header("satoken", userToken))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("A0401"));
+    }
+
+    @Test
     void freeze_unknown_user_returns_404() throws Exception {
         String token = loginAdmin();
 
@@ -142,6 +158,17 @@ class AdminUserFreezeApiTest {
                 .build();
         userMapper.insert(user);
         return user;
+    }
+
+    private String loginUser(String username, String rawPassword) throws Exception {
+        String body = objectMapper.writeValueAsString(Map.of("username", username, "password", rawPassword));
+        MvcResult result = mockMvc.perform(post("/app/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andReturn();
+        return objectMapper.readTree(result.getResponse().getContentAsString(StandardCharsets.UTF_8))
+                .path("data").path("token").asText();
     }
 
     private String loginAdmin() throws Exception {

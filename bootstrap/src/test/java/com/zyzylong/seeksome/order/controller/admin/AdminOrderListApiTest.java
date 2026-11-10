@@ -118,7 +118,8 @@ class AdminOrderListApiTest {
 
         mockMvc.perform(get("/admin/orders").header("admin-token", token).param("status", "unknown"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("A0400"));
+                .andExpect(jsonPath("$.code").value("A0400"))
+                .andExpect(jsonPath("$.message").value("订单状态不合法"));
     }
 
     @Test

@@ -13,6 +13,7 @@ import com.zyzylong.seeksome.item.enums.ItemErrorCodeEnum;
 import com.zyzylong.seeksome.item.exception.ItemException;
 import com.zyzylong.seeksome.item.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -61,7 +62,11 @@ public class CategoryServiceImpl implements CategoryService {
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .build();
-        categoryMapper.insert(category);
+        try {
+            categoryMapper.insert(category);
+        } catch (DuplicateKeyException ex) {
+            throw new ItemException(ItemErrorCodeEnum.CATEGORY_CODE_EXISTS);
+        }
         return category.getId();
     }
 

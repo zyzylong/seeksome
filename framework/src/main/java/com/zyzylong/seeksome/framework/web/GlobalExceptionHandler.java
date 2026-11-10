@@ -5,14 +5,18 @@ import com.zyzylong.seeksome.framework.error.CommonErrorCodeEnum;
 import com.zyzylong.seeksome.framework.exception.AbstractException;
 import com.zyzylong.seeksome.framework.result.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
@@ -25,17 +29,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AbstractException.class)
     public ResponseEntity<Result<Void>> handleAbstractException(AbstractException ex) {
         BaseErrorCode errorCode = ex.getErrorCode();
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(Result.failure(errorCode));
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(Result.failure(errorCode, ex.getMessage()));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Result<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Result<Void>> handleBindException(BindException ex) {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .findFirst()
                 .map(FieldError::getDefaultMessage)
                 .orElse(CommonErrorCodeEnum.PARAM_INVALID.getMessage());
         return ResponseEntity.status(CommonErrorCodeEnum.PARAM_INVALID.getHttpStatus())
                 .body(Result.failure(CommonErrorCodeEnum.PARAM_INVALID, message));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Result<Void>> handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity.status(CommonErrorCodeEnum.PARAM_INVALID.getHttpStatus())
+                .body(Result.failure(CommonErrorCodeEnum.PARAM_INVALID, "请求参数格式不正确"));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<Result<Void>> handleMissingServletRequestParameterException(
+            MissingServletRequestParameterException ex) {
+        return ResponseEntity.status(CommonErrorCodeEnum.PARAM_INVALID.getHttpStatus())
+                .body(Result.failure(CommonErrorCodeEnum.PARAM_INVALID, "缺少必填参数：" + ex.getParameterName()));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -62,6 +80,14 @@ public class GlobalExceptionHandler {
             HttpMediaTypeNotSupportedException ex) {
         return ResponseEntity.status(CommonErrorCodeEnum.UNSUPPORTED_MEDIA_TYPE.getHttpStatus())
                 .body(Result.failure(CommonErrorCodeEnum.UNSUPPORTED_MEDIA_TYPE));
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public ResponseEntity<Result<Void>> handleHttpMediaTypeNotAcceptableException(
+            HttpMediaTypeNotAcceptableException ex) {
+        return ResponseEntity.status(CommonErrorCodeEnum.NOT_ACCEPTABLE.getHttpStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Result.failure(CommonErrorCodeEnum.NOT_ACCEPTABLE));
     }
 
     @ExceptionHandler(Exception.class)

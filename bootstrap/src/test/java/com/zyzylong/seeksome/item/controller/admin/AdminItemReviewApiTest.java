@@ -185,7 +185,8 @@ class AdminItemReviewApiTest {
                         .header("admin-token", token)
                         .param("status", "unknown"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("A0400"));
+                .andExpect(jsonPath("$.code").value("A0400"))
+                .andExpect(jsonPath("$.message").value("拍品状态不合法"));
     }
 
     @Test
@@ -229,6 +230,16 @@ class AdminItemReviewApiTest {
         assertEquals(24, Duration.between(approved.getStartTime(), approved.getEndTime()).toHours());
         assertFalse(approved.getStartTime().isBefore(before.minusSeconds(5)));
         assertTrue(approved.getStartTime().isBefore(LocalDateTime.now().plusSeconds(5)));
+    }
+
+    @Test
+    void approve_rejects_non_numeric_item_id_with_400() throws Exception {
+        String token = loginAdmin();
+
+        mockMvc.perform(post("/admin/items/{itemId}/approve", "abc")
+                        .header("admin-token", token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("A0400"));
     }
 
     @Test

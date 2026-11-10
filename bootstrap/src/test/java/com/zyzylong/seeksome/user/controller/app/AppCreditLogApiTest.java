@@ -1,6 +1,7 @@
 package com.zyzylong.seeksome.user.controller.app;
 
 import cn.hutool.crypto.digest.BCrypt;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.zyzylong.seeksome.user.dao.entity.CreditLogDO;
 import com.zyzylong.seeksome.user.dao.entity.UserDO;
 import com.zyzylong.seeksome.user.dao.mapper.CreditLogMapper;
@@ -108,6 +109,19 @@ class AppCreditLogApiTest {
                 .andExpect(jsonPath("$.data.pageSize").value(2))
                 .andExpect(jsonPath("$.data.list.length()").value(1))
                 .andExpect(jsonPath("$.data.list[0].relatedId").value(9201));
+    }
+
+    @Test
+    void list_rejects_frozen_user_with_valid_session() throws Exception {
+        UserDO user = saveUser("credit_frozen_user");
+        String token = login(user.getId());
+        userMapper.update(null, new LambdaUpdateWrapper<UserDO>()
+                .eq(UserDO::getId, user.getId())
+                .set(UserDO::getStatus, "frozen"));
+
+        mockMvc.perform(get("/app/users/credit-logs").header("satoken", token))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value("A0301"));
     }
 
     @Test

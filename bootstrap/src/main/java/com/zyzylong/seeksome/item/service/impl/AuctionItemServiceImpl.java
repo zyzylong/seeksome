@@ -60,43 +60,45 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     @Override
     public void updateItemApproved(Long itemId) {
         AuctionItemDO item = requireItem(itemId);
-        if (!ItemStatusEnum.PENDING_REVIEW.getValue().equals(item.getStatus())) {
-            throw new ItemException(ItemErrorCodeEnum.ITEM_STATUS_NOT_ALLOWED, "仅待审核拍品可审核通过");
-        }
         LocalDateTime now = LocalDateTime.now();
-        auctionItemMapper.update(null, new LambdaUpdateWrapper<AuctionItemDO>()
+        int result = auctionItemMapper.update(null, new LambdaUpdateWrapper<AuctionItemDO>()
                 .eq(AuctionItemDO::getId, itemId)
+                .eq(AuctionItemDO::getStatus, ItemStatusEnum.PENDING_REVIEW.getValue())
                 .set(AuctionItemDO::getStatus, ItemStatusEnum.ACTIVE.getValue())
                 .set(AuctionItemDO::getStartTime, now)
                 .set(AuctionItemDO::getEndTime, now.plusHours(item.getDurationHours()))
                 .set(AuctionItemDO::getUpdateTime, now));
+        if (result == 0) {
+            throw new ItemException(ItemErrorCodeEnum.ITEM_STATUS_NOT_ALLOWED, "仅待审核拍品可审核通过");
+        }
     }
 
     @Override
     public void updateItemRejected(Long itemId, AdminItemRejectRequest requestParam) {
-        AuctionItemDO item = requireItem(itemId);
-        if (!ItemStatusEnum.PENDING_REVIEW.getValue().equals(item.getStatus())) {
-            throw new ItemException(ItemErrorCodeEnum.ITEM_STATUS_NOT_ALLOWED, "仅待审核拍品可审核驳回");
-        }
-        auctionItemMapper.update(null, new LambdaUpdateWrapper<AuctionItemDO>()
+        requireItem(itemId);
+        int result = auctionItemMapper.update(null, new LambdaUpdateWrapper<AuctionItemDO>()
                 .eq(AuctionItemDO::getId, itemId)
+                .eq(AuctionItemDO::getStatus, ItemStatusEnum.PENDING_REVIEW.getValue())
                 .set(AuctionItemDO::getStatus, ItemStatusEnum.REJECTED.getValue())
                 .set(AuctionItemDO::getRejectReason, StrUtil.trim(requestParam.getRejectReason()))
                 .set(AuctionItemDO::getUpdateTime, LocalDateTime.now()));
+        if (result == 0) {
+            throw new ItemException(ItemErrorCodeEnum.ITEM_STATUS_NOT_ALLOWED, "仅待审核拍品可审核驳回");
+        }
     }
 
     @Override
     public void updateItemCancelled(Long itemId) {
-        AuctionItemDO item = requireItem(itemId);
-        boolean cancellable = ItemStatusEnum.PENDING_REVIEW.getValue().equals(item.getStatus())
-                || ItemStatusEnum.ACTIVE.getValue().equals(item.getStatus());
-        if (!cancellable) {
-            throw new ItemException(ItemErrorCodeEnum.ITEM_STATUS_NOT_ALLOWED, "仅待审核或在拍拍品可下架");
-        }
-        auctionItemMapper.update(null, new LambdaUpdateWrapper<AuctionItemDO>()
+        requireItem(itemId);
+        int result = auctionItemMapper.update(null, new LambdaUpdateWrapper<AuctionItemDO>()
                 .eq(AuctionItemDO::getId, itemId)
+                .in(AuctionItemDO::getStatus, ItemStatusEnum.PENDING_REVIEW.getValue(),
+                        ItemStatusEnum.ACTIVE.getValue())
                 .set(AuctionItemDO::getStatus, ItemStatusEnum.CANCELLED.getValue())
                 .set(AuctionItemDO::getUpdateTime, LocalDateTime.now()));
+        if (result == 0) {
+            throw new ItemException(ItemErrorCodeEnum.ITEM_STATUS_NOT_ALLOWED, "仅待审核或在拍拍品可下架");
+        }
     }
 
     private AuctionItemDO requireItem(Long itemId) {

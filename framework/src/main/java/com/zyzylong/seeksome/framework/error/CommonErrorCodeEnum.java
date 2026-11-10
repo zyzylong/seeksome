@@ -10,6 +10,7 @@ public enum CommonErrorCodeEnum implements BaseErrorCode {
     UNAUTHORIZED("A0401", "未登录或登录状态已失效", 401),
     NOT_FOUND("A0404", "请求资源不存在", 404),
     METHOD_NOT_ALLOWED("A0405", "请求方法不支持", 405),
+    NOT_ACCEPTABLE("A0406", "无法生成客户端可接受的响应", 406),
     UNSUPPORTED_MEDIA_TYPE("A0415", "不支持的请求媒体类型", 415),
     SYSTEM_ERROR("B0500", "系统繁忙，请稍后重试", 500);
 

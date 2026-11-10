@@ -99,7 +99,8 @@ class AdminDepositLogListApiTest {
 
         mockMvc.perform(get("/admin/deposit-logs").header("admin-token", token).param("type", "unknown"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("A0400"));
+                .andExpect(jsonPath("$.code").value("A0400"))
+                .andExpect(jsonPath("$.message").value("保证金流水类型不合法"));
     }
 
     @Test
