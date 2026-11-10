@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS deposit_log (
     UNIQUE (user_id, auction_id, type)
 );
 
+CREATE TABLE IF NOT EXISTS wallet_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    type VARCHAR(16) NOT NULL,
+    related_type VARCHAR(32) NULL,
+    related_id BIGINT NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS credit_log (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT NOT NULL,
